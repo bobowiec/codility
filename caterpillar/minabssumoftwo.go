@@ -71,10 +71,10 @@ func MinAbsSumOfTwo(A []int) int {
 		if min > abs(currentSum) {
 			min = abs(currentSum)
 		}
-		if currentSum > 0 {
-			right--
-		} else {
+		if currentSum < 0 {
 			left++
+		} else {
+			right--
 		}
 	}
 	return min
