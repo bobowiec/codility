@@ -2,7 +2,7 @@ package dynamicprogramming
 
 import "math"
 
-func min(a, b int) int {
+func minimum(a, b int) int {
 	if a < b {
 		return a
 	}
@@ -24,7 +24,7 @@ func DynamicCoinChanging(C []int, k int) []int {
 			dp[i][j] = dp[i-1][j]
 		}
 		for j := C[i-1]; j < k+1; j++ {
-			dp[i][j] = min(dp[i][j-C[i-1]]+1, dp[i-1][j])
+			dp[i][j] = minimum(dp[i][j-C[i-1]]+1, dp[i-1][j])
 		}
 	}
 	return dp[n]
@@ -39,7 +39,7 @@ func DynamicCoinChangingOpt(C []int, k int) []int {
 
 	for i := 1; i < n+1; i++ {
 		for j := C[i-1]; j < k+1; j++ {
-			dp[j] = min(dp[j-C[i-1]]+1, dp[j])
+			dp[j] = minimum(dp[j-C[i-1]]+1, dp[j])
 		}
 	}
 	return dp
