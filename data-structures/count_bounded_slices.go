@@ -44,7 +44,38 @@ K is an integer within the range [0..1,000,000,000];
 each element of array A is an integer within the range [−1,000,000,000..1,000,000,000].
 */
 
-func CountBoundedSlices(K int, A []int) int {
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 
-	return 0
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func CountBoundedSlices(K int, A []int) int {
+	N := len(A)
+	result := 0
+	for i := range A {
+		minimum := A[i]
+		maximum := A[i]
+		for j := i; j < N; j++ {
+			maximum = max(maximum, A[j])
+			minimum = min(minimum, A[j])
+			if maximum-minimum <= K {
+				result += 1
+				if result == 1000000000 {
+					return result
+				}
+			} else {
+				break
+			}
+		}
+	}
+	return result
 }
