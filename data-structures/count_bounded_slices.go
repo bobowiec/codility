@@ -44,6 +44,56 @@ K is an integer within the range [0..1,000,000,000];
 each element of array A is an integer within the range [−1,000,000,000..1,000,000,000].
 */
 
+func CountBoundedSlices(K int, A []int) int {
+	const maxINT = 1000000000
+	N := len(A)
+
+	maxQ := make([]int, N+1)
+	posmaxQ := make([]int, N+1)
+	minQ := make([]int, N+1)
+	posminQ := make([]int, N+1)
+
+	firstMax, lastMax := 0, -1
+	firstMin, lastMin := 0, -1
+	j, result := 0, 0
+
+	for i := 0; i < N; i++ {
+		for j < N {
+			// added new maximum element
+			for lastMax >= firstMax && maxQ[lastMax] <= A[j] {
+				lastMax--
+			}
+			lastMax++
+			maxQ[lastMax] = A[j]
+			posmaxQ[lastMax] = j
+			// added new minimum element
+			for lastMin >= firstMin && minQ[lastMin] >= A[j] {
+				lastMin--
+			}
+			lastMin++
+			minQ[lastMin] = A[j]
+			posminQ[lastMin] = j
+
+			if maxQ[firstMax]-minQ[firstMin] <= K {
+				j += 1
+			} else {
+				break
+			}
+		}
+		result += (j - i)
+		if result >= maxINT {
+			return maxINT
+		}
+		if posminQ[firstMin] == i {
+			firstMin++
+		}
+		if posmaxQ[firstMax] == i {
+			firstMax++
+		}
+	}
+	return result
+}
+
 func max(a, b int) int {
 	if a > b {
 		return a
@@ -58,7 +108,7 @@ func min(a, b int) int {
 	return b
 }
 
-func CountBoundedSlices(K int, A []int) int {
+func CountBoundedSlicesBruteForce(K int, A []int) int {
 	N := len(A)
 	result := 0
 	for i := range A {
